@@ -74,6 +74,8 @@ void startFrameListener(PNT::Window *window)
     ImGui::SliderInt("##SliderInt 0", (int *)&step, 1, 20, "%d", ImGuiSliderFlags_AlwaysClamp);
 
     ImGui::End();
+
+    ImGui::ShowDemoWindow();
 }
 
 int main(int argc, char *argv[])
