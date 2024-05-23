@@ -5,7 +5,7 @@ bool shouldClose = false;
 float rgb[] = {1, 0, 0};
 unsigned char step = 5;
 
-void eventListener(PNT::Window *window)
+void eventCallback(PNT::Window *window)
 {
     if(PNT::getEvent().type == SDL_EVENT_KEY_DOWN)
     {
@@ -58,7 +58,7 @@ void eventListener(PNT::Window *window)
     }
 }
 
-void startFrameListener(PNT::Window *window)
+void startFrameCallback(PNT::Window *window)
 {
     // Set background color.
     window->setClearColor(rgb[0], rgb[1], rgb[2]);
@@ -84,20 +84,17 @@ int main(int argc, char *argv[])
     PNT::init();
 
     // Creating window
-    PNT::Window window("Demo Window", 600, 600, SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIGH_PIXEL_DENSITY);
+    PNT::Window window("Demo Window", 600, 600);
 
-    // Setting listeners
-    window.setListener(PNT_LISTENER_FLAGS_EVENT, &eventListener);
-    window.setListener(PNT_LISTENER_FLAGS_STARTFRAME, &startFrameListener);
+    // Setting callbackss
+    window.setCallback(PNT_CALLBACK_FLAGS_STARTFRAME, &startFrameCallback);
+    window.setEventCallback(PNT_EVENT_CALLBACK_FLAGS_KEYBOARD, &eventCallback);
 
     // App loop
     while(!shouldClose)
     {
         // Event processing
-        while(PNT::pollEvent())
-        {
-            window.eventProcess();
-        }
+        glfwPollEvents();
 
         // Start and end frame
         window.startFrame();
