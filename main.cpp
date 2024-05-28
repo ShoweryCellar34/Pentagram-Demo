@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
 
     // Setting callbackss
     window.setCallback(PNT_CALLBACK_FLAGS_STARTFRAME, &startFrameCallback);
-    window.setEventCallback(PNT_EVENT_CALLBACK_FLAGS_KEYBOARD, &eventCallback);
+    window.setEventCallback(PNT_EVENT_TYPE_KEYBOARD, &eventCallback);
 
     // App loop
     while(!shouldClose)
