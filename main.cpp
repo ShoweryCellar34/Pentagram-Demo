@@ -5,61 +5,54 @@ bool shouldClose = false;
 float rgb[] = {1, 0, 0};
 unsigned char step = 5;
 
-void eventCallback(PNT::Window *window)
-{
-    if(PNT::getEvent().type == SDL_EVENT_KEY_DOWN)
-    {
-        switch(PNT::getEvent().key.keysym.sym)
-        {
-        case SDLK_1:
+void eventCallback(PNT::Window *window, PNT::windowEvent event) {
+    if(event.eventType == PNT_EVENT_TYPE_KEYBOARD) {
+        switch(event.keyboardEvent.key) {
+        case GLFW_KEY_1:
             rgb[0] = 1;
             rgb[1] = 0;
             rgb[2] = 0;
             break;
 
-        case SDLK_2:
+        case GLFW_KEY_2:
             rgb[0] = 0;
             rgb[1] = 0;
             rgb[2] = 1;
             break;
 
-        case SDLK_BACKSPACE:
-            window->setPosition(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+        case GLFW_KEY_BACKSPACE:
+            window->setPosition(500, 500);
             break;
 
-        case SDLK_EQUALS:
+        case GLFW_KEY_EQUAL:
             if(step < 20) step++;
             break;
 
-        case SDLK_MINUS:
+        case GLFW_KEY_MINUS:
             if(step > 1) step--;
             break;
 
-        case SDLK_UP:
+        case GLFW_KEY_UP:
             window->setPosition(-1, window->getWindowData().y - step);
             break;
 
-        case SDLK_DOWN:
+        case GLFW_KEY_DOWN:
             window->setPosition(-1, window->getWindowData().y + step);
             break;
 
-        case SDLK_LEFT:
+        case GLFW_KEY_LEFT:
             window->setPosition(window->getWindowData().x - step, -1);
             break;
 
-        case SDLK_RIGHT:
+        case GLFW_KEY_RIGHT:
             window->setPosition(window->getWindowData().x + step, -1);
             break;
         }
     }
-    if(PNT::getEvent().window.type == SDL_EVENT_WINDOW_CLOSE_REQUESTED)
-    {
-        shouldClose = true;
-    }
+    //if(PNT::getEvent().window.type == SDL_EVENT_WINDOW_CLOSE_REQUESTED) {shouldClose = true;}
 }
 
-void startFrameCallback(PNT::Window *window)
-{
+void startFrameCallback(PNT::Window *window) {
     // Set background color.
     window->setClearColor(rgb[0], rgb[1], rgb[2]);
 
@@ -78,8 +71,7 @@ void startFrameCallback(PNT::Window *window)
     ImGui::ShowDemoWindow();
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     // Initulizing
     PNT::init();
 
@@ -88,11 +80,10 @@ int main(int argc, char *argv[])
 
     // Setting callbackss
     window.setCallback(PNT_CALLBACK_FLAGS_STARTFRAME, &startFrameCallback);
-    window.setEventCallback(PNT_EVENT_TYPE_KEYBOARD, &eventCallback);
+    window.setEventCallback(&eventCallback);
 
     // App loop
-    while(!shouldClose)
-    {
+    while(!shouldClose) {
         // Event processing
         glfwPollEvents();
 
