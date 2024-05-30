@@ -72,7 +72,7 @@ void startFrameCallback(PNT::Window *window) {
 }
 
 int main(int argc, char *argv[]) {
-    // Initulizing
+    // Init
     PNT::init();
 
     // Creating window
@@ -91,5 +91,8 @@ int main(int argc, char *argv[]) {
         window.startFrame();
         window.endFrame();
     }
+
+    // Deinit
+    PNT::deinit();
     return 0;
 }
