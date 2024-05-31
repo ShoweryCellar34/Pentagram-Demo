@@ -49,19 +49,18 @@ void eventCallback(PNT::Window *window, PNT::windowEvent event) {
             break;
         }
     }
-    //if(PNT::getEvent().window.type == SDL_EVENT_WINDOW_CLOSE_REQUESTED) {shouldClose = true;}
 }
 
 void startFrameCallback(PNT::Window *window) {
     // Set background color.
     window->setClearColor(rgb[0], rgb[1], rgb[2]);
 
-    // ImGui gui.
+    // ImGui GUI.
     ImGui::Begin("Demo Controls");
 
+    // Clear Color.
     ImGui::Text("Background Color: ");
     ImGui::ColorPicker3("##ColorPicker3 0", rgb, ImGuiColorEditFlags_InputRGB);
-
     ImGui::Text("Reposition Step: ");
     ImGui::SameLine();
     ImGui::SliderInt("##SliderInt 0", (int *)&step, 1, 20, "%d", ImGuiSliderFlags_AlwaysClamp);
@@ -83,9 +82,9 @@ int main(int argc, char *argv[]) {
     window.setEventCallback(&eventCallback);
 
     // App loop
-    while(!shouldClose) {
+    while(!window.shouldClose()) {
         // Event processing
-        glfwPollEvents();
+        PNT::processEvents();
 
         // Start and end frame
         window.startFrame();
