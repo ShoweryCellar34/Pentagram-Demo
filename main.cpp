@@ -1,9 +1,9 @@
 #include <PentagramExt.hpp>
 #include <random>
 
-bool shouldClose = false;
 float rgb[] = {1, 0, 0};
 unsigned char step = 5;
+glm::vec2 movment = {0, 0};
 
 void eventCallback(PNT::Window *window, PNT::windowEvent event) {
     if(event.eventType == PNT_EVENT_TYPE_KEYBOARD) {
@@ -21,7 +21,7 @@ void eventCallback(PNT::Window *window, PNT::windowEvent event) {
             break;
 
         case GLFW_KEY_BACKSPACE:
-            window->setPosition(500, 500);
+            window->setPosition(700, 500);
             break;
 
         case GLFW_KEY_EQUAL:
@@ -32,22 +32,27 @@ void eventCallback(PNT::Window *window, PNT::windowEvent event) {
             if(step > 1) step--;
             break;
 
-        case GLFW_KEY_UP:
-            window->setPosition(-1, window->getWindowData().y - step);
-            break;
-
-        case GLFW_KEY_DOWN:
-            window->setPosition(-1, window->getWindowData().y + step);
+        case GLFW_KEY_RIGHT:
+            if(event.keyboardEvent.action == GLFW_PRESS) movment[0] += 1;
+            if(event.keyboardEvent.action == GLFW_RELEASE) movment[0] += -1;
             break;
 
         case GLFW_KEY_LEFT:
-            window->setPosition(window->getWindowData().x - step, -1);
+            if(event.keyboardEvent.action == GLFW_PRESS) movment[0] += -1;
+            if(event.keyboardEvent.action == GLFW_RELEASE) movment[0] += 1;
             break;
 
-        case GLFW_KEY_RIGHT:
-            window->setPosition(window->getWindowData().x + step, -1);
+        case GLFW_KEY_UP:
+            if(event.keyboardEvent.action == GLFW_PRESS) movment[1] += -1;
+            if(event.keyboardEvent.action == GLFW_RELEASE) movment[1] += 1;
+            break;
+
+        case GLFW_KEY_DOWN:
+            if(event.keyboardEvent.action == GLFW_PRESS) movment[1] += 1;
+            if(event.keyboardEvent.action == GLFW_RELEASE) movment[1] += -1;
             break;
         }
+        window->setPosition(window->getWindowData().xpos + (movment[0] * step), window->getWindowData().ypos + (movment[1] * step));
     }
 }
 
@@ -75,7 +80,7 @@ int main(int argc, char *argv[]) {
     PNT::init();
 
     // Creating window
-    PNT::Window window("Demo Window", 600, 600);
+    PNT::Window window("Demo Window", 600, 600, 500, 700);
 
     // Setting callbackss
     window.setCallback(PNT_CALLBACK_FLAGS_STARTFRAME, &startFrameCallback);
