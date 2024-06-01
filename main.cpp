@@ -1,5 +1,4 @@
-#include <PentagramExt.hpp>
-#include <random>
+#include <Pentagram.hpp>
 
 float rgb[] = {1, 0, 0};
 unsigned char step = 5;
