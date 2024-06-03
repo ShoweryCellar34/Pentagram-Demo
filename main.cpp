@@ -1,7 +1,8 @@
 #include <Pentagram.hpp>
 
 float rgb[] = {1, 0, 0};
-unsigned char step = 5;
+int step = 5;
+bool showDemoWindow = true;
 glm::vec2 movment = {0, 0};
 
 void eventCallback(PNT::Window *window, PNT::windowEvent event) {
@@ -67,11 +68,13 @@ void startFrameCallback(PNT::Window *window) {
     ImGui::ColorPicker3("##ColorPicker3 0", rgb, ImGuiColorEditFlags_InputRGB);
     ImGui::Text("Reposition Step: ");
     ImGui::SameLine();
-    ImGui::SliderInt("##SliderInt 0", (int *)&step, 1, 20, "%d", ImGuiSliderFlags_AlwaysClamp);
+    ImGui::SliderInt("##SliderInt 0", &step, 1, 20, "%d", ImGuiSliderFlags_AlwaysClamp);
+
+    // Demo Window.
+    if(ImGui::Button(showDemoWindow ? "Hide Demo Window ##Button 0" : "Show Demo Window ##Button 0")) showDemoWindow = !showDemoWindow;
+    if(showDemoWindow) ImGui::ShowDemoWindow(&showDemoWindow);
 
     ImGui::End();
-
-    ImGui::ShowDemoWindow();
 }
 
 int main(int argc, char *argv[]) {
@@ -79,7 +82,7 @@ int main(int argc, char *argv[]) {
     PNT::init();
 
     // Creating window
-    PNT::Window window("Demo Window", 600, 600, 500, 700);
+    PNT::Window window("Demo Window", 600, 600, 700, 400, ImGuiConfigFlags_ViewportsEnable | ImGuiConfigFlags_DockingEnable);
 
     // Setting callbackss
     window.setCallback(PNT_CALLBACK_FLAGS_STARTFRAME, &startFrameCallback);
