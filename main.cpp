@@ -83,6 +83,12 @@ int main(int argc, char *argv[]) {
 
     // Creating window
     PNT::Window window("Demo Window", 600, 600, 700, 400, ImGuiConfigFlags_ViewportsEnable | ImGuiConfigFlags_DockingEnable);
+    PNT::image image("D:/Repositories/Pentagram-Demo/logo.png");
+    if(!image.validate()) {
+        std::cout << stbi_failure_reason();
+        exit(1);
+    }
+    window.setIcon(image);
 
     // Setting callbackss
     window.setCallback(PNT_CALLBACK_FLAGS_STARTFRAME, &startFrameCallback);
