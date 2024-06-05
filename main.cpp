@@ -58,7 +58,7 @@ void eventCallback(PNT::Window *window, PNT::windowEvent event) {
 
 void startFrameCallback(PNT::Window *window) {
     // Set background color.
-    window->setClearColor(rgb[0], rgb[1], rgb[2]);
+    window->setClearColor(rgb[0], rgb[1], rgb[2], 1);
 
     // ImGui GUI.
     ImGui::Begin("Demo Controls");
@@ -78,7 +78,7 @@ void startFrameCallback(PNT::Window *window) {
 }
 
 int main(int argc, char *argv[]) {
-    // Init
+    // Initilize.
     PNT::init();
 
     // Creating window
@@ -90,15 +90,15 @@ int main(int argc, char *argv[]) {
 
     // App loop
     while(!window.shouldClose()) {
-        // Event processing
+        // Event processing.
         PNT::processEvents();
 
-        // Start and end frame
+        // Start and end frame.
         window.startFrame();
         window.endFrame();
     }
 
-    // Deinit
+    // Shutdown.
     PNT::deinit();
     return 0;
 }
