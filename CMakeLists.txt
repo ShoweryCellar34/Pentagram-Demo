@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.27)
+cmake_minimum_required(VERSION 3.20)
 project(Pentagram-Demo DESCRIPTION "Example app for Pentagram" LANGUAGES CXX HOMEPAGE_URL "https://github.com/ShoweryCellar34/Pentagram-Demo")
 add_executable(Pentagram-Demo "main.cpp")
 add_subdirectory(Pentagram)
