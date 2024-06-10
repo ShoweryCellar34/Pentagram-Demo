@@ -4,6 +4,8 @@ float rgb[] = {1, 0, 0};
 int step = 5;
 bool showDemoWindow = true;
 glm::vec2 movment = {0, 0};
+std::string logoPath = "";
+PNT::image logo(logoPath.c_str());
 
 void eventCallback(PNT::Window *window, PNT::windowEvent event) {
     if(event.eventType == PNT_EVENT_TYPE_KEYBOARD) {
@@ -63,6 +65,11 @@ void startFrameCallback(PNT::Window *window) {
     // ImGui GUI.
     ImGui::Begin("Demo Controls");
 
+    // Logo Path.
+    ImGui::Text("Logo Path: ");
+    ImGui::SameLine();
+    ImGui::InputText("##InputText 0", &logoPath);
+
     // Clear Color.
     ImGui::Text("Background Color: ");
     ImGui::ColorPicker3("##ColorPicker3 0", rgb, ImGuiColorEditFlags_InputRGB);
@@ -75,6 +82,9 @@ void startFrameCallback(PNT::Window *window) {
     if(showDemoWindow) ImGui::ShowDemoWindow(&showDemoWindow);
 
     ImGui::End();
+
+    logo.setData(logoPath.c_str());
+    if(logo.valid()) window->setIcon(logo);
 }
 
 int main(int argc, char *argv[]) {
@@ -83,12 +93,6 @@ int main(int argc, char *argv[]) {
 
     // Creating window
     PNT::Window window("Demo Window", 600, 600, 700, 400, ImGuiConfigFlags_ViewportsEnable | ImGuiConfigFlags_DockingEnable);
-    PNT::image image("D:/Repositories/Pentagram-Demo/logo.png");
-    if(!image.validate()) {
-        std::cout << stbi_failure_reason();
-        exit(1);
-    }
-    window.setIcon(image);
 
     // Setting callbackss
     window.setCallback(PNT_CALLBACK_FLAGS_STARTFRAME, &startFrameCallback);
