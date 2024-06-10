@@ -4,7 +4,7 @@ float rgb[] = {1, 0, 0};
 int step = 5;
 bool showDemoWindow = true;
 glm::vec2 movment = {0, 0};
-std::string logoPath = "";
+std::string logoPath = "..\\logo.png";
 PNT::image logo(logoPath.c_str());
 
 void eventCallback(PNT::Window *window, PNT::windowEvent event) {
