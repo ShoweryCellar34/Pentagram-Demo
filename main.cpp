@@ -58,57 +58,48 @@ void eventCallback(PNT::Window *window, PNT::windowEvent event) {
     }
 }
 
-void startFrameCallback(PNT::Window *window) {
-    // Set background color.
-    window->setClearColor(rgb[0], rgb[1], rgb[2], 1);
-
-    // ImGui GUI.
-    ImGui::Begin("Demo Controls");
-
-    // Logo Path.
-    ImGui::Text("Logo Path: ");
-    ImGui::SameLine();
-    ImGui::InputText("##InputText 0", &logoPath);
-
-    // Clear Color.
-    ImGui::Text("Background Color: ");
-    ImGui::ColorPicker3("##ColorPicker3 0", rgb, ImGuiColorEditFlags_InputRGB);
-    ImGui::Text("Reposition Step: ");
-    ImGui::SameLine();
-    ImGui::SliderInt("##SliderInt 0", &step, 1, 20, "%d", ImGuiSliderFlags_AlwaysClamp);
-
-    // Demo Window.
-    if(ImGui::Button(showDemoWindow ? "Hide Demo Window ##Button 0" : "Show Demo Window ##Button 0")) showDemoWindow = !showDemoWindow;
-    if(showDemoWindow) ImGui::ShowDemoWindow(&showDemoWindow);
-
-    ImGui::End();
-
-    logo.setData(logoPath.c_str());
-    if(logo.valid()) window->setIcon(logo);
-}
-
 int main(int argc, char *argv[]) {
-    // Initilize.
     PNT::init();
 
-    // Creating window
     PNT::Window window("Demo Window", 600, 600, 700, 400, ImGuiConfigFlags_ViewportsEnable | ImGuiConfigFlags_DockingEnable);
 
-    // Setting callbackss
-    window.setCallback(PNT_CALLBACK_FLAGS_STARTFRAME, &startFrameCallback);
     window.setEventCallback(&eventCallback);
 
-    // App loop
     while(!window.shouldClose()) {
-        // Event processing.
         PNT::processEvents();
 
-        // Start and end frame.
         window.startFrame();
+
+        // Set background color.
+        window.setClearColor(rgb[0], rgb[1], rgb[2], 1);
+
+        // ImGui GUI.
+        ImGui::Begin("Demo Controls");
+
+        // Logo Path.
+        ImGui::Text("Logo Path: ");
+        ImGui::SameLine();
+        ImGui::InputText("##InputText 0", &logoPath);
+
+        // Clear Color.
+        ImGui::Text("Background Color: ");
+        ImGui::ColorPicker3("##ColorPicker3 0", rgb, ImGuiColorEditFlags_InputRGB);
+        ImGui::Text("Reposition Step: ");
+        ImGui::SameLine();
+        ImGui::SliderInt("##SliderInt 0", &step, 1, 20, "%d", ImGuiSliderFlags_AlwaysClamp);
+
+        // Demo Window.
+        if(ImGui::Button(showDemoWindow ? "Hide Demo Window ##Button 0" : "Show Demo Window ##Button 0")) showDemoWindow = !showDemoWindow;
+        if(showDemoWindow) ImGui::ShowDemoWindow(&showDemoWindow);
+
+        ImGui::End();
+
+        logo.load("res\\logo.png");
+        if(logo.valid()) window.setIcon(logo);
+
         window.endFrame();
     }
 
-    // Shutdown.
     PNT::deinit();
     return 0;
 }
