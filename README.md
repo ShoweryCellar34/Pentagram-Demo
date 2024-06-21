@@ -1,4 +1,4 @@
-### What is Pentagram Demo dev?
+### What is Pentagram Demo?
 Pentagram Demo is the example app for [Pentagram](https://github.com/ShoweryCellar34/Pentagram.git).
 
 ## How to clone
