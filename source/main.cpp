@@ -1,25 +1,24 @@
-#include <Pentagram.hpp>
+#include <PNT/Pentagram.hpp>
 
-float rgb[] = {1, 0, 0};
+float rgba[] = {1, 0, 0, 1};
 int step = 5;
 bool showDemoWindow = true;
-glm::vec2 movment = {0, 0};
-std::string logoPath = "..\\logo.png";
-PNT::image logo(logoPath.c_str());
+int movment[2] = {0, 0};
 
+// Event callback
 void eventCallback(PNT::Window *window, PNT::windowEvent event) {
-    if(event.eventType == PNT_EVENT_TYPE_KEYBOARD) {
-        switch(event.keyboardEvent.key) {
+    if(event.type == PNT_EVENT_TYPE_KEYBOARD) {
+        switch(event.keyboard.key) {
         case GLFW_KEY_1:
-            rgb[0] = 1;
-            rgb[1] = 0;
-            rgb[2] = 0;
+            rgba[0] = 1;
+            rgba[1] = 0;
+            rgba[2] = 0;
             break;
 
         case GLFW_KEY_2:
-            rgb[0] = 0;
-            rgb[1] = 0;
-            rgb[2] = 1;
+            rgba[0] = 0;
+            rgba[1] = 0;
+            rgba[2] = 1;
             break;
 
         case GLFW_KEY_BACKSPACE:
@@ -35,23 +34,23 @@ void eventCallback(PNT::Window *window, PNT::windowEvent event) {
             break;
 
         case GLFW_KEY_RIGHT:
-            if(event.keyboardEvent.action == GLFW_PRESS) movment[0] += 1;
-            if(event.keyboardEvent.action == GLFW_RELEASE) movment[0] += -1;
+            if(event.keyboard.action == GLFW_PRESS) movment[0] += 1;
+            if(event.keyboard.action == GLFW_RELEASE) movment[0] += -1;
             break;
 
         case GLFW_KEY_LEFT:
-            if(event.keyboardEvent.action == GLFW_PRESS) movment[0] += -1;
-            if(event.keyboardEvent.action == GLFW_RELEASE) movment[0] += 1;
+            if(event.keyboard.action == GLFW_PRESS) movment[0] += -1;
+            if(event.keyboard.action == GLFW_RELEASE) movment[0] += 1;
             break;
 
         case GLFW_KEY_UP:
-            if(event.keyboardEvent.action == GLFW_PRESS) movment[1] += -1;
-            if(event.keyboardEvent.action == GLFW_RELEASE) movment[1] += 1;
+            if(event.keyboard.action == GLFW_PRESS) movment[1] += -1;
+            if(event.keyboard.action == GLFW_RELEASE) movment[1] += 1;
             break;
 
         case GLFW_KEY_DOWN:
-            if(event.keyboardEvent.action == GLFW_PRESS) movment[1] += 1;
-            if(event.keyboardEvent.action == GLFW_RELEASE) movment[1] += -1;
+            if(event.keyboard.action == GLFW_PRESS) movment[1] += 1;
+            if(event.keyboard.action == GLFW_RELEASE) movment[1] += -1;
             break;
         }
         window->setPosition(window->getWindowData().xpos + (movment[0] * step), window->getWindowData().ypos + (movment[1] * step));
@@ -61,6 +60,7 @@ void eventCallback(PNT::Window *window, PNT::windowEvent event) {
 int main(int argc, char *argv[]) {
     PNT::init();
 
+    glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE);
     PNT::Window window("Demo Window", 600, 600, 700, 400, ImGuiConfigFlags_ViewportsEnable | ImGuiConfigFlags_DockingEnable);
 
     window.setEventCallback(&eventCallback);
@@ -71,19 +71,17 @@ int main(int argc, char *argv[]) {
         window.startFrame();
 
         // Set background color.
-        window.setClearColor(rgb[0], rgb[1], rgb[2], 1);
+        window.setClearColor(rgba[0], rgba[1], rgba[2], rgba[3]);
 
         // ImGui GUI.
         ImGui::Begin("Demo Controls");
 
-        // Logo Path.
-        ImGui::Text("Logo Path: ");
-        ImGui::SameLine();
-        ImGui::InputText("##InputText 0", &logoPath);
-
         // Clear Color.
         ImGui::Text("Background Color: ");
-        ImGui::ColorPicker3("##ColorPicker3 0", rgb, ImGuiColorEditFlags_InputRGB);
+        ImGui::ColorPicker3("##ColorPicker3 0", rgba, ImGuiColorEditFlags_InputRGB);
+        ImGui::Text("Alpha channel: ");
+        ImGui::SameLine();
+        ImGui::SliderFloat("##SliderFloat 0", &rgba[3], 0.0f, 1.0f, "%f", ImGuiSliderFlags_AlwaysClamp);
         ImGui::Text("Reposition Step: ");
         ImGui::SameLine();
         ImGui::SliderInt("##SliderInt 0", &step, 1, 20, "%d", ImGuiSliderFlags_AlwaysClamp);
@@ -93,9 +91,6 @@ int main(int argc, char *argv[]) {
         if(showDemoWindow) ImGui::ShowDemoWindow(&showDemoWindow);
 
         ImGui::End();
-
-        logo.load("res\\logo.png");
-        if(logo.valid()) window.setIcon(logo);
 
         window.endFrame();
     }
