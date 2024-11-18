@@ -7,7 +7,8 @@ int movment[2] = {0, 0};
 
 // Event callback
 void eventCallback(PNT::Window *window, PNT::windowEvent event) {
-    if(event.type == PNT_EVENT_TYPE_KEYBOARD) {
+    if(event.type == PNT::eventTypes::KEYBOARD) {
+        userLogger.get()->info("Keyboard event!");
         switch(event.keyboard.key) {
         case GLFW_KEY_1:
             rgba[0] = 1;
